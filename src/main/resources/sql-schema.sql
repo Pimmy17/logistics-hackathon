@@ -1,11 +1,50 @@
-drop schema ims;
+CREATE SCHEMA IF NOT EXISTS `logisticshackathon`;
 
-CREATE SCHEMA IF NOT EXISTS `ims`;
+USE `logisticshackathon` ;
+CREATE TABLE IF NOT EXISTS `logisticshackathon`.`users` (
+    `user_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `role` VARCHAR(40) DEFAULT NULL,
+    PRIMARY KEY (`user_id`)
+);
+USE `logisticshackathon` ;
+CREATE TABLE IF NOT EXISTS `logisticshackathon`.`managers` (
+    `fk_user_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `firstname` VARCHAR(40) DEFAULT NULL,
+    `surname` VARCHAR(40) DEFAULT NULL,
+    FOREIGN KEY (`fk_user_id`) REFERENCES users(`user_id`)
+);
+CREATE TABLE IF NOT EXISTS `logisticshackathon`.`drivers` (
+    `fk_user_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `firstname` VARCHAR(40) DEFAULT NULL,
+    `surname` VARCHAR(40) DEFAULT NULL,
+    FOREIGN KEY (`fk_user_id`) REFERENCES users(`user_id`)
+);
 
-USE `ims` ;
-
-CREATE TABLE IF NOT EXISTS `ims`.`products` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `logisticshackathon`.`products` (
+    `product_id` INT(11) NOT NULL AUTO_INCREMENT,
     `product_name` VARCHAR(40) DEFAULT NULL,
-    PRIMARY KEY (`id`)
+     PRIMARY KEY (`product_id`)
+);
+
+
+CREATE TABLE IF NOT EXISTS `logisticshackathon`.`orders` (
+    `order_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `fk_user_id` INT(11),
+    `customer_name` VARCHAR(40) DEFAULT NULL,
+    `customer_address` VARCHAR(40) DEFAULT NULL,
+     PRIMARY KEY (`order_id`),
+FOREIGN KEY (`fk_user_id`) REFERENCES manager(`fk_user_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `logisticshackathon`.`orderassignment` (
+    `orderproduct_id` INT(11) NOT NULL AUTO_INCREMENT,
+`fk_product_id` INT(11) NOT NULL ,
+`fk_order_id` INT(11) NOT NULL ,
+`fk_user_id` INT(11) NOT NULL ,
+    `product_name` VARCHAR(40) DEFAULT NULL,
+ `delivery_status` VARCHAR(40) DEFAULT NULL,
+     PRIMARY KEY (`orderproduct_id`),
+FOREIGN KEY (`fk_product_id`) REFERENCES products(`product_id`),
+FOREIGN KEY (`fk_order_id`) REFERENCES orders (`order_id`),
+FOREIGN KEY (`fk_user_id`) REFERENCES drivers(`fk_user_id`)
 );
