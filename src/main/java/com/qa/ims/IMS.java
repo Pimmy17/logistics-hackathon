@@ -25,7 +25,7 @@ public class IMS {
 	}
 
 	public void imsSystem() {
-		LOGGER.info("Welcome to the Inventory Management System!");
+		LOGGER.info("Welcome to the Delivery Management System!");
 		DBUtils.connect();
 
 		Domain domain = null;
