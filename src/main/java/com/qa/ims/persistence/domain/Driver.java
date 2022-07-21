@@ -1,5 +1,5 @@
 package com.qa.ims.persistence.domain;
 
-public class Driver {
+public class Driver extends User {
 
 }
