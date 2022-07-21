@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `logisticshackathon`.`manager` (
     `surname` VARCHAR(40) DEFAULT NULL,
     FOREIGN KEY (`fk_user_id`) REFERENCES users(`user_id`)
 );
-CREATE TABLE IF NOT EXISTS `logisticshackathon`.`driver` (
+CREATE TABLE IF NOT EXISTS `logisticshackathon`.`drivers` (
     `fk_user_id` INT(11) NOT NULL AUTO_INCREMENT,
     `firstname` VARCHAR(40) DEFAULT NULL,
     `surname` VARCHAR(40) DEFAULT NULL,
