@@ -1,8 +1,7 @@
-DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `products`;
 
-CREATE TABLE IF NOT EXISTS `customers` (
+CREATE TABLE IF NOT EXISTS `products` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `first_name` VARCHAR(40) DEFAULT NULL,
-    `surname` VARCHAR(40) DEFAULT NULL,
+    `product_name` VARCHAR(40) DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
