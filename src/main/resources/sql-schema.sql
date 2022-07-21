@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `logisticshackathon`.`orders` (
     `customer_name` VARCHAR(40) DEFAULT NULL,
     `customer_address` VARCHAR(40) DEFAULT NULL,
      PRIMARY KEY (`order_id`),
-FOREIGN KEY (`fk_user_id`) REFERENCES manager(`fk_user_id`)
+FOREIGN KEY (`fk_user_id`) REFERENCES managers(`fk_user_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `logisticshackathon`.`orderassignment` (
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `logisticshackathon`.`orderassignment` (
 `fk_order_id` INT(11) NOT NULL ,
 `fk_user_id` INT(11) NOT NULL ,
     `product_name` VARCHAR(40) DEFAULT NULL,
- `delivery_status` VARCHAR(40) DEFAULT NULL,
+ `delivery_status` VARCHAR(40) DEFAULT FALSE,
      PRIMARY KEY (`orderproduct_id`),
 FOREIGN KEY (`fk_product_id`) REFERENCES products(`product_id`),
 FOREIGN KEY (`fk_order_id`) REFERENCES orders (`order_id`),
