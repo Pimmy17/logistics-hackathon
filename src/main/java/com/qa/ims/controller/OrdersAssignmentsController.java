@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.OrdersAssignmentsDAO;
 import com.qa.ims.persistence.domain.OrdersAssignment;
-import com.qa.ims.utils.Utils;
+import com.qa.logisticshackathon.utils.Utils;
 
 public class OrdersAssignmentsController implements CrudController<OrdersAssignment> {
 

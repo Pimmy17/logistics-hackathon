@@ -10,8 +10,8 @@ import com.qa.ims.controller.ProductsController;
 import com.qa.ims.persistence.dao.OrdersAssignmentsDAO;
 import com.qa.ims.persistence.dao.ProductsDAO;
 import com.qa.ims.persistence.domain.Domain;
-import com.qa.ims.utils.DBUtils;
-import com.qa.ims.utils.Utils;
+import com.qa.logisticshackathon.utils.DBUtils;
+import com.qa.logisticshackathon.utils.Utils;
 
 public class IMS {
 
