@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `logisticshackathon`.`products` (
 CREATE TABLE IF NOT EXISTS `logisticshackathon`.`orders` (
     `order_id` INT(11) NOT NULL AUTO_INCREMENT,
     `fk_user_id` INT(11),	
-    `quantity` INT(11) NOT NULL ,
+    `quantity` INT(11) NOT NULL DEFAULT 1,
     `customer_name` VARCHAR(40) DEFAULT NULL,
     `customer_address` VARCHAR(40) DEFAULT NULL,
      PRIMARY KEY (`order_id`),
