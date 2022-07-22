@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.qa.ims.persistence.domain.Product;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.DBUtils;
+import com.qa.ims.persistence.dao.Dao;
 
 public class OrderDAO implements Dao<Order> {
 	public static final Logger LOGGER = LogManager.getLogger();
@@ -28,9 +29,9 @@ public class OrderDAO implements Dao<Order> {
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long order_id = resultSet.getLong("order_id");
-		List<Product> product_list = getProducts(order_id);
-		
-		return new Order(order_id, product_list);
+		String customer_name = resultSet.getString("customer_name");
+		String customer_address = resultSet.getString("customer_address");
+		return new Order(order_id, customer_name, customer_address);
 	}
 	
 	
@@ -38,7 +39,7 @@ public class OrderDAO implements Dao<Order> {
 		List<Product> ProductList = new ArrayList<>();
         try (Connection connection = DBUtils.getInstance().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT * FROM products WHERE product_id = ?")) {
+                     .prepareStatement("SELECT * FROM products WHERE product_id = ?");) {
             statement.setLong(1, order_id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -102,8 +103,8 @@ public class OrderDAO implements Dao<Order> {
 	public Order create(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO orders (order_id) VALUES = (?)");) {
-			statement.setLong(1, order.getProduct_id());
+						.prepareStatement("INSERT INTO orders(customer_name) VALUES (?)");) {
+			statement.setString(1, order.getCustomer_name());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -140,5 +141,6 @@ public class OrderDAO implements Dao<Order> {
 		}
 		return 0;
 	}
+
 
 }

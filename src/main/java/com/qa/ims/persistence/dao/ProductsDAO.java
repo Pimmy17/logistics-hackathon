@@ -109,9 +109,9 @@ public class ProductsDAO implements Dao<Product> {
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE products SET product_name = ? WHERE product_id = ?");) {
 			statement.setString(1, product.getProductName());
-			statement.setLong(2, product.getId());
+			statement.setLong(2, product.getProduct_id());
 			statement.executeUpdate();
-			return read(product.getId());
+			return read(product.getProduct_id());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -125,7 +125,7 @@ public class ProductsDAO implements Dao<Product> {
 	 * @param id - id of the product
 	 */
 	@Override
-	public int delete(long product_id) {
+	public int delete(Long product_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE product_id = ?");) {
 			statement.setLong(1, product_id);
