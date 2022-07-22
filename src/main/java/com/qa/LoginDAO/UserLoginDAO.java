@@ -11,13 +11,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.TMTY.domain.Logins;
+import com.qa.ims.persistence.dao.Dao;
 import com.qa.logins.UserLogins;
 import com.qa.logisticshackathon.utils.DBUtils;
 
-
-
-public class UserLoginDAO {
+public class UserLoginDAO implements Dao<UserLogins> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 	
@@ -33,6 +31,7 @@ public class UserLoginDAO {
 	 * @return A list of customers
 	 */
 	
+	@Override
 	public List<UserLogins> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -50,21 +49,23 @@ public class UserLoginDAO {
 		return new ArrayList<>();
 	}
 
+	@Override
 	public UserLogins create(UserLogins userlogins) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement(
-						"INSERT INTO logins(role) VALUES (?)");) {
+				PreparedStatement statement = connection
+						.prepareStatement("INSERT INTO UserLogins(role) VALUES (?)");) {
 			statement.setString(1, userlogins.getRole());
 			statement.executeUpdate();
-			return readLatest();
+			return readlatest();
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return null;
-		
 	}
+
 	
+	@Override
 	public UserLogins read(Long userId) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM logins WHERE login_id = ?");) {
@@ -80,10 +81,11 @@ public class UserLoginDAO {
 		return null;
 	}
 	
+	@Override
 	public UserLogins update(UserLogins logins) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement(
-						"UPDATE logins SET assigner_name = ?, driver_name = ?, privilege = ? WHERE login_id = ?");) {
+						"UPDATE logins SET role = ? WHERE userId = ?");) {
 			statement.setString(1, logins.getRole());
 			statement.executeUpdate();
 			return read(logins.getUserId());
@@ -94,5 +96,18 @@ public class UserLoginDAO {
 		return null;
 	}
 
+	@Override
+	public int delete(long userId) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM Userlogins WHERE userId = ?");) {
+			statement.setLong(1, userId);
+			return statement.executeUpdate();
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return 0;
+	}
+	
 	
 }
