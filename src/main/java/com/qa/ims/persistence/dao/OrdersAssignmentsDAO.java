@@ -77,13 +77,10 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	@Override
 	public OrdersAssignment create(OrdersAssignment ordersAssignment) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement(
-						"INSERT INTO orderassignment(fk_order_id, fk_product_id, fk_user_id, quantity) VALUES (?, ?, ?, ?)");) {
+				PreparedStatement statement = connection
+						.prepareStatement("INSERT INTO orderassignment(fk_order_id fk_user_id) VALUES (?, ?)");) {
 			statement.setLong(1, ordersAssignment.getFk_order_id());
-			statement.setLong(2, ordersAssignment.getFk_product_id());
-			statement.setLong(3, ordersAssignment.getFk_user_id());
-			statement.setInt(4, ordersAssignment.getQuantity());
-
+			statement.setLong(2, ordersAssignment.getFk_user_id());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -122,10 +119,57 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	public OrdersAssignment update(OrdersAssignment ordersAssignment) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement(
-						"UPDATE orderassignment SET quantity = ? WHERE orderproduct_id = ? AND fk_product_id = ?");) {
-			statement.setInt(1, ordersAssignment.getQuantity());
+						"UPDATE orderassignment SET fk_user_id = ? WHERE orderproduct_id = ? AND fk_order_id = ?");) {
+			statement.setLong(1, ordersAssignment.getFk_user_id());
 			statement.setLong(2, ordersAssignment.getOrderproduct_id());
-			statement.setLong(3, ordersAssignment.getFk_product_id());
+			statement.setLong(3, ordersAssignment.getFk_order_id());
+			statement.executeUpdate();
+			return read(ordersAssignment.getOrderproduct_id());
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
+
+	public OrdersAssignment addOrder(OrdersAssignment ordersAssignment) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement(
+						"INSERT INTO orderassignment (fk_orders_id) VALUES (SELECT order_id FROM orders WHERE order_id = ?);");) {
+			statement.setLong(1, ordersAssignment.getFk_order_id());
+			statement.executeUpdate();
+			return read(ordersAssignment.getFk_order_id());
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
+
+	public OrdersAssignment removeOrder(OrdersAssignment ordersAssignment) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statementOne = connection.prepareStatement(
+						"UPDATE orderassignment JOIN orders ON orders.order_id = orderassignment.fk_order_id SET orders.quantity = 0 WHERE orders.order_id = ? && orderproduct_id = ?");
+				PreparedStatement statementTwo = connection.prepareStatement(
+						"DELETE FROM orderassignment JOIN orders ON orders.order_id = orderassignment.fk_order_id WHERE orders.quantity = 0");) {
+			statementOne.setLong(1, ordersAssignment.getFk_order_id());
+			statementOne.setLong(2, ordersAssignment.getOrderproduct_id());
+			statementOne.executeUpdate();
+			statementTwo.executeUpdate();
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
+
+	public OrdersAssignment deliverOrder(OrdersAssignment ordersAssignment) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement(
+						"UPDATE orderassignment SET delivery_status = ? WHERE orderproduct_id = ? AND fk_order_id = ?");) {
+			statement.setBoolean(1, ordersAssignment.getDelivery_status());
+			statement.setLong(2, ordersAssignment.getOrderproduct_id());
+			statement.setLong(3, ordersAssignment.getFk_order_id());
 			statement.executeUpdate();
 			return read(ordersAssignment.getOrderproduct_id());
 		} catch (Exception e) {

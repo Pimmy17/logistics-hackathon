@@ -13,7 +13,6 @@ public class OrdersAssignment {
 
 	public OrdersAssignment(Long orderproduct_id, Long fk_order_id, Long fk_product_id, Long fk_user_id,
 			String product_name, Integer quantity, Boolean delivery_status, String customer_name) {
-		this.setDelivery_status(delivery_status);
 		this.setFk_order_id(fk_order_id);
 		this.setFk_product_id(fk_product_id);
 		this.setOrderproduct_id(orderproduct_id);
@@ -23,19 +22,18 @@ public class OrdersAssignment {
 		this.setProduct_name(product_name);
 	}
 
-	public OrdersAssignment(Long orderID, Long productID, Integer quantity, Long userID) {
+	public OrdersAssignment(Long orderID, Long userID) {
 		this.setFk_order_id(fk_order_id);
-		this.setFk_product_id(fk_product_id);
-		this.setQuantity(quantity);
 		this.setFk_user_id(fk_user_id);
 	}
 
-	public OrdersAssignment(Long orderproduct_id, Long fk_order_id, Long fk_product_id, Integer quantity,
-			Long fk_user_id) {
+	public OrdersAssignment(Boolean delivery_status) {
+		this.setDelivery_status(delivery_status);
+	}
+
+	public OrdersAssignment(Long orderproduct_id, Long fk_order_id, Long fk_user_id) {
 		this.setOrderproduct_id(orderproduct_id);
 		this.setFk_order_id(fk_order_id);
-		this.setFk_product_id(fk_product_id);
-		this.setQuantity(quantity);
 		this.setFk_user_id(fk_user_id);
 	}
 
@@ -53,10 +51,6 @@ public class OrdersAssignment {
 
 	public void setCustomer_name(String customer_name) {
 		this.customer_name = customer_name;
-	}
-
-	public Long getFk_user_id() {
-		return fk_user_id;
 	}
 
 	public Long getOrderproduct_id() {
@@ -83,11 +77,11 @@ public class OrdersAssignment {
 		this.fk_order_id = fk_order_id;
 	}
 
-	public Bool getDelivery_status() {
+	public Boolean getDelivery_status() {
 		return delivery_status;
 	}
 
-	public void setDelivery_status(Bool delivery_status) {
+	public void setDelivery_status(Boolean delivery_status) {
 		this.delivery_status = delivery_status;
 	}
 
@@ -99,7 +93,7 @@ public class OrdersAssignment {
 		this.quantity = quantity;
 	}
 
-	public void getFk_user_id(Long fk_user_id) {
+	public Long getFk_user_id() {
 		return fk_user_id;
 	}
 
