@@ -35,7 +35,7 @@ public class UserLoginDAO implements Dao<UserLogins> {
 	public List<UserLogins> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM user logins");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM users");) {
 			List<UserLogins> logins = new ArrayList<>();
 			while (resultSet.next()) {
 				logins.add(modelFromResultSet(resultSet));
@@ -48,6 +48,22 @@ public class UserLoginDAO implements Dao<UserLogins> {
 		}
 		return new ArrayList<>();
 	}
+	
+	
+
+	public UserLogins readLatest() {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM users ORDER BY id DESC LIMIT 1");) {
+			resultSet.next();
+			return modelFromResultSet(resultSet);
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
+	
 
 	@Override
 	public UserLogins create(UserLogins userlogins) {
