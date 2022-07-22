@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.LoginDAO.CrudController;
 import com.qa.LoginDAO.UserLoginDAO;
-import com.qa.ims.persistence.domain.Customer;
+
 import com.qa.logins.UserLogins;
 import com.qa.logisticshackathon.utils.Utils;
 
@@ -26,29 +26,41 @@ public class LoginController implements CrudController<UserLogins> {
 	}
 
 		@Override
-		public List<UserLogin> readAll() {
-			List<UserLogins> userlogins = UserLoginDAO.readAll();
+		public List<UserLogins> readAll() {
+			List<UserLogins> userlogins = userlogindao.readAll();
 			for (UserLogins userlogin : userlogins) {
 				LOGGER.info(userlogin);
-			return null;
+		}
+			return userlogins;
 		}
 
 		@Override
-		public UserLogin create() {
-			// TODO Auto-generated method stub
-			return null;
+		public UserLogins create() {
+			LOGGER.info("Please enter your Role");
+			String role = utils.getString();
+			UserLogins userlogins = new UserLogins(role);
+			LOGGER.info("User Logged");
+			return userlogins;
 		}
 
 		@Override
-		public UserLogin update() {
-			// TODO Auto-generated method stub
-			return null;
+		public UserLogins update() {
+			LOGGER.info("Please enter the id of the user you would like to update");
+			Long Userid = utils.getLong();
+			LOGGER.info("Please enter the new role");
+			String role = utils.getString();
+			UserLogins userlogins = new UserLogins(Userid, role);
+			LOGGER.info("User Updated");
+			return userlogins;
+
+			
 		}
 
 		@Override
 		public int delete() {
-			// TODO Auto-generated method stub
-			return 0;
+			LOGGER.info("Please enter the id of the user you would like to delete");
+			Long Userid = utils.getLong();
+			return userlogindao.delete(Userid);
 		}
 	
 	

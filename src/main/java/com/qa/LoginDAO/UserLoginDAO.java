@@ -56,7 +56,7 @@ public class UserLoginDAO implements Dao<UserLogins> {
 						.prepareStatement("INSERT INTO UserLogins(role) VALUES (?)");) {
 			statement.setString(1, userlogins.getRole());
 			statement.executeUpdate();
-			return readlatest();
+			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
