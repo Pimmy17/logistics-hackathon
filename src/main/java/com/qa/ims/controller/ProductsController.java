@@ -43,10 +43,9 @@ public class ProductsController implements CrudController<Product> {
 	 */
 	@Override
 	public Product create() {
-		LOGGER.info("Please enter an item name");
-		String productName = utils.getString();
-
-		Product product = productDAO.create(new Product(productName));
+		LOGGER.info("Please enter an product name");
+		String product_name= utils.getString();
+		Product product = productDAO.create(new Product(product_name));
 		LOGGER.info("Product created");
 		return product;
 	}
@@ -56,11 +55,11 @@ public class ProductsController implements CrudController<Product> {
 	 */
 	@Override
 	public Product update() {
-		LOGGER.info("Please enter the id of the product you would like to update");
-		Long id = utils.getLong();
-		LOGGER.info("Please enter an item name");
-		String productName = utils.getString();
-		Product product = productDAO.update(new Product(id, productName));
+		LOGGER.info("Please enter the ID of the product you would like to update");
+		Long product_id = utils.getLong();
+		LOGGER.info("Please enter an product name");
+		String product_name = utils.getString();
+		Product product = productDAO.update(new Product(product_id, product_name));
 		LOGGER.info("Product Updated");
 		return product;
 	}
@@ -72,9 +71,9 @@ public class ProductsController implements CrudController<Product> {
 	 */
 	@Override
 	public int delete() {
-		LOGGER.info("Please enter the id of the product you would like to delete");
-		Long id = utils.getLong();
-		return productDAO.delete(id);
+		LOGGER.info("Please enter the ID of the product you would like to delete");
+		Long product_id = utils.getLong();
+		return productDAO.delete(product_id);
 	}
 
 }

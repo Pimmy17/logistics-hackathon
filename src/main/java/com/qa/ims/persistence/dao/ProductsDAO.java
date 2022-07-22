@@ -20,9 +20,9 @@ public class ProductsDAO implements Dao<Product> {
 
 	@Override
 	public Product modelFromResultSet(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("id");
-		String productName = resultSet.getString("product_name");
-		return new Product(id, productName);
+		Long product_id = resultSet.getLong("product_id");
+		String product_name = resultSet.getString("product_name");
+		return new Product(product_id, product_name);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class ProductsDAO implements Dao<Product> {
 	public Product readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM products ORDER BY id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM products ORDER BY product_id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -81,10 +81,10 @@ public class ProductsDAO implements Dao<Product> {
 	}
 
 	@Override
-	public Product read(Long id) {
+	public Product read(Long product_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("SELECT * FROM products WHERE id = ?");) {
-			statement.setLong(1, id);
+				PreparedStatement statement = connection.prepareStatement("SELECT * FROM products WHERE product_id = ?");) {
+			statement.setLong(1, product_id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
 				return modelFromResultSet(resultSet);
@@ -107,7 +107,7 @@ public class ProductsDAO implements Dao<Product> {
 	public Product update(Product product) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE products SET product_name = ? WHERE id = ?");) {
+						.prepareStatement("UPDATE products SET product_name = ? WHERE product_id = ?");) {
 			statement.setString(1, product.getProductName());
 			statement.setLong(2, product.getId());
 			statement.executeUpdate();
@@ -125,10 +125,10 @@ public class ProductsDAO implements Dao<Product> {
 	 * @param id - id of the product
 	 */
 	@Override
-	public int delete(long id) {
+	public int delete(long product_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE id = ?");) {
-			statement.setLong(1, id);
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE product_id = ?");) {
+			statement.setLong(1, product_id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
 			LOGGER.debug(e);
