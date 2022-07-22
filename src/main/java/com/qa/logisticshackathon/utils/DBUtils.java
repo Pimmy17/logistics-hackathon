@@ -1,4 +1,4 @@
-package com.qa.ims.utils;
+package com.qa.logisticshackathon.utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
