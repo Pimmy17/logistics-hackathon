@@ -185,7 +185,7 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	 * @param id - id of the assignment
 	 */
 	@Override
-	public int delete(long orderproduct_id) {
+	public int delete(Long orderproduct_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("DELETE FROM orderassignment WHERE orderproduct_id = ?");) {

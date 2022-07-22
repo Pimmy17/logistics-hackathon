@@ -1,13 +1,13 @@
 package com.qa.ims.controller;
 
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import com.qa.ims.persistence.dao.OrderDAO;
-import com.qa.ims.persistence.dao.ProductsDAO;
 import com.qa.ims.persistence.domain.Order;
-import com.qa.ims.persistence.domain.Product;
-import com.qa.ims.utils.Utils;
+import com.qa.logisticshackathon.utils.Utils;
 
 public class OrderController implements CrudController<Order> {
 
@@ -35,15 +35,15 @@ public class OrderController implements CrudController<Order> {
 	public Order create() {
 		LOGGER.info("Please enter the Customer Name:");
 		String customer_name = utils.getString();
-        Order order = orderDAO.create(new Order(customer_name));
-        LOGGER.info("New Order Successfully Created");
+		Order order = orderDAO.create(new Order(customer_name));
+		LOGGER.info("New Order Successfully Created");
 		return order;
 	}
 
 	@Override
 	public Order update() {
 		for (Order element : orderDAO.readAll()) {
-		    System.out.println(element);
+			System.out.println(element);
 		}
 		LOGGER.info("Please enter the order ID:");
 		Long order_id = utils.getLong();
@@ -57,7 +57,7 @@ public class OrderController implements CrudController<Order> {
 	@Override
 	public int delete() {
 		for (Order element : orderDAO.readAll()) {
-		    System.out.println(element);
+			System.out.println(element);
 		}
 		LOGGER.info("Please enter the ID of the order you would like to delete:");
 		Long order_id = utils.getLong();

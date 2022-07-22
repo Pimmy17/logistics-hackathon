@@ -65,17 +65,18 @@ public class OrdersAssignmentsController implements CrudController<OrdersAssignm
 			String addRemove = utils.getString();
 			addRemove = addRemove.toLowerCase();
 
-			if (addRemove == "add") {
-				LOGGER.info("Please enter the ID of the order you want to add to the assignment");
-				Long order_id = utils.getLong();
-				Orders order = new Orders(order_id);
-				OrderDAO orderDAO = new OrderDAO();
-				order = orderDAO.read(order.getOrder_id());
-				OrdersAssignment ordersAssignment = ordersAssignmentsDAO
-						.addOrder(new OrdersAssignment(orderproduct_id, orders.order_id));
-				LOGGER.info("Order Added to Assignment");
-				return order;
-			} else if (addRemove == "remove") {
+//			if (addRemove == "add") {
+//				LOGGER.info("Please enter the ID of the order you want to add to the assignment");
+//				Long fk_order_id = utils.getLong();
+//				OrdersAssignment ordersAssignment = new OrdersAssignment(fk_order_id);
+//				OrdersAssignmentsDAO ordersAssignmentsDAO = new OrdersAssignmentsDAO();
+//				ordersAssignment = ordersAssignmentsDAO.read(getFk_order_id());
+//				OrdersAssignment ordersAssignments = ordersAssignmentsDAO
+//						.addOrder(new OrdersAssignment(orderproduct_id, fk_order_id));
+//				LOGGER.info("Order Added to Assignment");
+//				return ordersAssignments;
+//			} else 
+			if (addRemove == "remove") {
 				LOGGER.info("Please enter the id of the order you wish to remove from the assignment");
 				Long order_id = utils.getLong();
 				OrdersAssignment ordersAssignment = new OrdersAssignment();
@@ -86,11 +87,11 @@ public class OrdersAssignmentsController implements CrudController<OrdersAssignm
 				return ordersAssignment;
 			} else if (addRemove == "update") {
 				LOGGER.info("Please enter the ID of the assignment you want to change the driver for");
-				Long order_id = utils.getLong();
+				Long fk_order_id = utils.getLong();
 				LOGGER.info("Please enter a driver ID for delivery");
 				Long fk_user_id = utils.getLong();
 				OrdersAssignment ordersAssignment = ordersAssignmentsDAO
-						.update(new OrdersAssignment(orderproduct_id, orders.order_id, fk_user_id));
+						.update(new OrdersAssignment(orderproduct_id, fk_order_id, fk_user_id));
 				LOGGER.info("Order Assignment Updated");
 				return ordersAssignment;
 			}

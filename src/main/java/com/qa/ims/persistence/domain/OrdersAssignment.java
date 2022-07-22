@@ -37,6 +37,13 @@ public class OrdersAssignment {
 		this.setFk_user_id(fk_user_id);
 	}
 
+	public OrdersAssignment() {
+	}
+
+	public OrdersAssignment(Long fk_order_id) {
+		this.setFk_order_id(fk_order_id);
+	}
+
 	public String getProduct_name() {
 		return product_name;
 	}

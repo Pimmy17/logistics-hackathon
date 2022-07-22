@@ -10,22 +10,21 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.qa.ims.persistence.domain.Product;
+
 import com.qa.ims.persistence.domain.Order;
-import com.qa.ims.utils.DBUtils;
-import com.qa.ims.persistence.dao.Dao;
+import com.qa.ims.persistence.domain.Product;
+import com.qa.logisticshackathon.utils.DBUtils;
 
 public class OrderDAO implements Dao<Order> {
 	public static final Logger LOGGER = LogManager.getLogger();
 
-
 	private final ProductsDAO productDAO;
-	
+
 	public OrderDAO(ProductsDAO productDAO) {
 
 		this.productDAO = productDAO;
 	}
-	
+
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long order_id = resultSet.getLong("order_id");
@@ -33,26 +32,25 @@ public class OrderDAO implements Dao<Order> {
 		String customer_address = resultSet.getString("customer_address");
 		return new Order(order_id, customer_name, customer_address);
 	}
-	
-	
+
 	public List<Product> getProducts(Long order_id) {
 		List<Product> ProductList = new ArrayList<>();
-        try (Connection connection = DBUtils.getInstance().getConnection();
-             PreparedStatement statement = connection
-                     .prepareStatement("SELECT * FROM products WHERE product_id = ?");) {
-            statement.setLong(1, order_id);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                ProductList.add(productDAO.read(resultSet.getLong("product_id")));
-            }
-            return ProductList;
-        } catch (Exception e) {
-            LOGGER.debug(e);
-            LOGGER.error(e.getMessage());
-        }
-        return ProductList;
-    }
-	
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM products WHERE product_id = ?");) {
+			statement.setLong(1, order_id);
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				ProductList.add(productDAO.read(resultSet.getLong("product_id")));
+			}
+			return ProductList;
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return ProductList;
+	}
+
 	@Override
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
@@ -69,7 +67,7 @@ public class OrderDAO implements Dao<Order> {
 		}
 		return new ArrayList<>();
 	}
-	
+
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -129,18 +127,17 @@ public class OrderDAO implements Dao<Order> {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public int delete(Long order_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-	             Statement statement = connection.createStatement()) {
-	            return statement.executeUpdate("DELETE FROM orders WHERE order_id = " + order_id);
+				Statement statement = connection.createStatement()) {
+			return statement.executeUpdate("DELETE FROM orders WHERE order_id = " + order_id);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
 	}
-
 
 }

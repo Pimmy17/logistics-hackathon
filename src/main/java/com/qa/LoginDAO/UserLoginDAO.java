@@ -109,7 +109,7 @@ public class UserLoginDAO implements Dao<UserLogins> {
 	}
 
 	@Override
-	public int delete(long userId) {
+	public int delete(Long userId) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM Userlogins WHERE userId = ?");) {
 			statement.setLong(1, userId);
