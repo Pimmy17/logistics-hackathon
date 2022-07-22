@@ -1,5 +1,7 @@
-package com.qa.LoginDAO;
+package com.qa.logincontroller;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,10 +12,14 @@ public interface CrudController<T> {
 
 	List<T> readAll();
 
+	T read(Long id);
+
 	T create();
 
 	T update();
 
-	int delete();
+	int delete(Long id);
+
+	T modelFromResultSet(ResultSet resultSet) throws SQLException;
 
 }
