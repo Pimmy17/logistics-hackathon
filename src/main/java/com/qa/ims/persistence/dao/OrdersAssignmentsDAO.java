@@ -23,8 +23,13 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 		Long orderproduct_id = resultSet.getLong("orderproduct_id");
 		Long fk_order_id = resultSet.getLong("order_id");
 		Long fk_product_id = resultSet.getLong("product_id");
+		Long fk_user_id = resultSet.getLong("user_id");
+		String product_name = resultSet.getString("product_name");
+		String customer_name = resultSet.getString("customer_name");
 		Integer quantity = resultSet.getInt("quantity");
-		return new OrdersAssignment(orderproduct_id, fk_order_id, fk_product_id, quantity);
+		Boolean delivery_status = resultSet.getBoolean("delivery_status");
+		return new OrdersAssignment(orderproduct_id, fk_order_id, fk_product_id, fk_user_id, product_name, quantity,
+				delivery_status, customer_name);
 	}
 
 	/**
@@ -36,7 +41,8 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	public List<OrdersAssignment> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM orderassignment");) {
+				ResultSet resultSet = statement.executeQuery(
+						"SELECT * FROM orderassignment JOIN orders ON orders.order_id = orderassignment.fk_order_id JOIN products ON products.product_id = orderassignment.fk_product_id JOIN users ON users.user_id = orderassignment.fk_user_id");) {
 			List<OrdersAssignment> orderAssignments = new ArrayList<>();
 			while (resultSet.next()) {
 				orderAssignments.add(modelFromResultSet(resultSet));
@@ -52,8 +58,8 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	public OrdersAssignment readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement
-						.executeQuery("SELECT * FROM orderassignment ORDER BY orderproduct_id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery(
+						"SELECT * FROM orderassignment JOIN orders ON orders.order_id = orderassignment.fk_order_id JOIN products ON products.product_id = orderassignment.fk_product_id JOIN users ON users.user_id = orderassignment.fk_user_id ORDER BY orderproduct_id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -90,8 +96,8 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	@Override
 	public OrdersAssignment read(Long orderproduct_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("SELECT * FROM orderassignment WHERE orderproduct_id = ?");) {
+				PreparedStatement statement = connection.prepareStatement(
+						"SELECT * FROM orderassignment JOIN orders ON orders.order_id = orderassignment.fk_order_id JOIN products ON products.product_id = orderassignment.fk_product_id JOIN users ON users.user_id = orderassignment.fk_user_id WHERE orderproduct_id = ?");) {
 			statement.setLong(1, orderproduct_id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
@@ -112,14 +118,14 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	 * @return
 	 */
 
-	// ************CURRENTLY HERE*******************
 	@Override
 	public OrdersAssignment update(OrdersAssignment ordersAssignment) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("UPDATE orderassignment SET quantity = ? WHERE orderproduct_id = ? AND ");) {
-			statement.setString(1, ordersAssignment.getQuantity());
+				PreparedStatement statement = connection.prepareStatement(
+						"UPDATE orderassignment SET quantity = ? WHERE orderproduct_id = ? AND fk_product_id = ?");) {
+			statement.setInt(1, ordersAssignment.getQuantity());
 			statement.setLong(2, ordersAssignment.getOrderproduct_id());
+			statement.setLong(3, ordersAssignment.getFk_product_id());
 			statement.executeUpdate();
 			return read(ordersAssignment.getOrderproduct_id());
 		} catch (Exception e) {
@@ -130,15 +136,16 @@ public class OrdersAssignmentsDAO implements Dao<OrdersAssignment> {
 	}
 
 	/**
-	 * Deletes a product in the database
+	 * Deletes an order assignment in the database
 	 * 
-	 * @param id - id of the product
+	 * @param id - id of the assignment
 	 */
 	@Override
-	public int delete(long id) {
+	public int delete(long orderproduct_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE id = ?");) {
-			statement.setLong(1, id);
+				PreparedStatement statement = connection
+						.prepareStatement("DELETE FROM orderassignment WHERE orderproduct_id = ?");) {
+			statement.setLong(1, orderproduct_id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
 			LOGGER.debug(e);

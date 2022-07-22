@@ -59,18 +59,25 @@ public class OrdersAssignmentsController implements CrudController<OrdersAssignm
 	@Override
 	public OrdersAssignment update() {
 		LOGGER.info("Please enter the id of the assignment you would like to update");
-		Long id = utils.getLong();
+		Long orderproduct_id = utils.getLong();
 		LOGGER.info("Please enter an order ID");
-		Long orderID = utils.getLong();
+		Long fk_order_id = utils.getLong();
 		LOGGER.info("Please enter a product ID");
-		Long productID = utils.getLong();
+		Long fk_product_id = utils.getLong();
 		LOGGER.info("Please enter the new quantity");
 		Integer quantity = utils.getInt();
+		LOGGER.info("Please enter a driver ID for delivery");
+		Long fk_user_id = utils.getLong();
 		OrdersAssignment ordersAssignment = ordersAssignmentsDAO
-				.update(new OrdersAssignment(id, orderID, productID, quantity));
+				.update(new OrdersAssignment(orderproduct_id, fk_order_id, fk_product_id, quantity, fk_user_id));
 		LOGGER.info("Order Assignment Updated");
 		return ordersAssignment;
 	}
+
+//	@Override
+//	public OrdersAssignment delivery() {
+//		LOGGER.info("Please enter the ");
+//	}
 
 	/**
 	 * Deletes an existing order assignment by the id of the assignment

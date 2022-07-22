@@ -58,7 +58,7 @@ public class IMS {
 			case ORDER:
 				active = this.orders;
 				break;
-			case ORDERS_ASSIGNMENTS:
+			case ORDER_ASSIGNMENTS:
 				active = this.ordersAssignments;
 				break;
 			case STOP:
