@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.domain.Product;
-import com.qa.ims.utils.DBUtils;
+import com.qa.logisticshackathon.utils.DBUtils;
 
 public class ProductsDAO implements Dao<Product> {
 

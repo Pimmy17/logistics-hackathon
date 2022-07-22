@@ -1,4 +1,4 @@
-package com.qa.ims.utils;
+package com.qa.logisticshackathon.utils;
 
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Utils {
-	
+
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final Scanner scanner;
@@ -34,6 +34,20 @@ public class Utils {
 		return longInput;
 	}
 
+	public Integer getInt() {
+		String input = null;
+		Integer intInput = null;
+		do {
+			try {
+				input = getString();
+				intInput = Integer.parseInt(input);
+			} catch (NumberFormatException nfe) {
+				LOGGER.info("Error - Please enter a number");
+			}
+		} while (intInput == null);
+		return intInput;
+	}
+
 	public String getString() {
 		return scanner.nextLine();
 	}
@@ -50,6 +64,20 @@ public class Utils {
 			}
 		} while (doubleInput == null);
 		return doubleInput;
+	}
+
+	public Boolean getBoolean() {
+		String input = null;
+		Boolean booleanInput = null;
+		do {
+			try {
+				input = getString();
+				booleanInput = Boolean.parseBoolean(input);
+			} catch (NumberFormatException nfe) {
+				LOGGER.info("Error - Please enter TRUE or FALSE");
+			}
+		} while (booleanInput == null);
+		return booleanInput;
 	}
 
 }

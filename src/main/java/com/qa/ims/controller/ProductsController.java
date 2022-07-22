@@ -7,12 +7,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.ProductsDAO;
 import com.qa.ims.persistence.domain.Product;
-import com.qa.ims.utils.Utils;
+import com.qa.logisticshackathon.utils.Utils;
 
-/**
- * Takes in product details for CRUD functionality
- *
- */
 public class ProductsController implements CrudController<Product> {
 
 	public static final Logger LOGGER = LogManager.getLogger();

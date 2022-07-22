@@ -5,31 +5,45 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.controller.Action;
 import com.qa.ims.controller.CrudController;
+
 import com.qa.ims.controller.OrderController;
-import com.qa.ims.controller.ProductsController;
 import com.qa.ims.persistence.dao.OrderDAO;
+
+import com.qa.ims.controller.OrdersAssignmentsController;
+import com.qa.ims.controller.ProductsController;
+import com.qa.ims.persistence.dao.OrdersAssignmentsDAO;
+
 import com.qa.ims.persistence.dao.ProductsDAO;
 import com.qa.ims.persistence.domain.Domain;
-import com.qa.ims.utils.DBUtils;
-import com.qa.ims.utils.Utils;
+import com.qa.logisticshackathon.utils.DBUtils;
+import com.qa.logisticshackathon.utils.Utils;
 
 public class IMS {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private final ProductsController product;
 	private final OrderController orders;
 	
+
+	private final ProductsController products;
+	private final OrdersAssignmentsController ordersAssignments;
+
+
 	private final Utils utils;
 
 	public IMS() {
 		this.utils = new Utils();
 		
 		final ProductsDAO prodDAO = new ProductsDAO();
-		this.product = new ProductsController(prodDAO, utils);
+
 		
 		final OrderDAO ordDAO = new OrderDAO(prodDAO);
 		this.orders = new OrderController(ordDAO, utils);
+
+		this.products = new ProductsController(prodDAO, utils);
+		final OrdersAssignmentsDAO ordsAssignDAO = new OrdersAssignmentsDAO();
+		this.ordersAssignments = new OrdersAssignmentsController(ordsAssignDAO, utils);
+
 	}
 
 	public void imsSystem() {
@@ -55,10 +69,15 @@ public class IMS {
 			CrudController<?> active = null;
 			switch (domain) {
 			case PRODUCTS:
-				active = this.product;
+
+				active = this.products;
 				break;
 			case ORDER:
 				active = this.orders;
+				break;
+			case ORDER_ASSIGNMENTS:
+				active = this.ordersAssignments;
+
 				break;
 			case STOP:
 				return;
@@ -66,7 +85,7 @@ public class IMS {
 				break;
 			}
 
-			LOGGER.info(() ->"What would you like to do with " + domain.name().toLowerCase() + ":");
+			LOGGER.info(() -> "What would you like to do with " + domain.name().toLowerCase() + ":");
 
 			Action.printActions();
 			Action action = Action.getAction(utils);
