@@ -7,7 +7,8 @@ import com.qa.logisticshackathon.utils.Utils;
 
 public enum Domain {
 
-	PRODUCTS("Information about products"), ORDERS("Individual Items"), ORDER_ASSIGNMENTS("Purchases of items"),
+
+	PRODUCTS("Information about products"), ORDER("Individual Items"), ORDER_ASSIGNMENTS("Purchases of items"),
 	STOP("To close the application");
 
 	public static final Logger LOGGER = LogManager.getLogger();

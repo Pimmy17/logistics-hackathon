@@ -5,9 +5,14 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.controller.Action;
 import com.qa.ims.controller.CrudController;
+
+import com.qa.ims.controller.OrderController;
+import com.qa.ims.persistence.dao.OrderDAO;
+
 import com.qa.ims.controller.OrdersAssignmentsController;
 import com.qa.ims.controller.ProductsController;
 import com.qa.ims.persistence.dao.OrdersAssignmentsDAO;
+
 import com.qa.ims.persistence.dao.ProductsDAO;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.logisticshackathon.utils.DBUtils;
@@ -17,17 +22,28 @@ public class IMS {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
+	private final OrderController orders;
+	
+
 	private final ProductsController products;
 	private final OrdersAssignmentsController ordersAssignments;
+
 
 	private final Utils utils;
 
 	public IMS() {
 		this.utils = new Utils();
+		
 		final ProductsDAO prodDAO = new ProductsDAO();
+
+		
+		final OrderDAO ordDAO = new OrderDAO(prodDAO);
+		this.orders = new OrderController(ordDAO, utils);
+
 		this.products = new ProductsController(prodDAO, utils);
 		final OrdersAssignmentsDAO ordsAssignDAO = new OrdersAssignmentsDAO();
 		this.ordersAssignments = new OrdersAssignmentsController(ordsAssignDAO, utils);
+
 	}
 
 	public void imsSystem() {
@@ -53,6 +69,7 @@ public class IMS {
 			CrudController<?> active = null;
 			switch (domain) {
 			case PRODUCTS:
+
 				active = this.products;
 				break;
 			case ORDER:
@@ -60,6 +77,7 @@ public class IMS {
 				break;
 			case ORDER_ASSIGNMENTS:
 				active = this.ordersAssignments;
+
 				break;
 			case STOP:
 				return;
