@@ -15,7 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.domain.Customer;
-import com.qa.ims.utils.Utils;
+import com.qa.logisticshackathon.utils.Utils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerControllerTest {

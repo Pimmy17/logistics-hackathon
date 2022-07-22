@@ -8,8 +8,8 @@ import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.domain.Domain;
-import com.qa.ims.utils.DBUtils;
-import com.qa.ims.utils.Utils;
+import com.qa.logisticshackathon.utils.DBUtils;
+import com.qa.logisticshackathon.utils.Utils;
 
 public class IMS {
 
